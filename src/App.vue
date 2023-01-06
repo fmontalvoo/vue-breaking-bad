@@ -5,7 +5,7 @@ import Navbar from "@/modules/characters/components/Navbar.vue";
 <template>
   <div class="wrapper">
     <header>
-      <Navbar />
+      <Navbar title="BreakingBad" />
     </header>
 
     <main>
