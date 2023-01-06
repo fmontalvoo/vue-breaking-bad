@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import type { APIResponse } from '@/models/response.model'
+
 const apiUrl = import.meta.env.VITE_API_URL
 
 const api = axios.create({
@@ -7,5 +9,9 @@ const api = axios.create({
 })
 
 export const getAll = async () => {
-    return await (await api.get('')).data
+    try {
+        return (await api.get<APIResponse>('')).data
+    } catch (error) {
+        throw error
+    }
 }

@@ -1,15 +1,19 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { getAll } from '@/services'
 
-getAll().then((data) => {
-    console.log(data)
-})
+import type { Character } from '@/models/response.model';
+
+const response = await getAll();
+const characters = ref<Character[]>(response.results);
+
 </script>
 
 <template>
-    <div>
-
-    </div>
+    <ul>
+        <li v-for="{ id, name } of characters" :key="id">{{ name }}</li>
+    </ul>
 </template>
 
 <style scoped>
