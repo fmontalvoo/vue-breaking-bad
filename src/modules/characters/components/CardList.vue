@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useCharacters } from '../composables/useCharacters';
 
-import { getAll } from '@/services'
-
-import type { Character } from '@/models/response.model';
-
-const response = await getAll();
-const characters = ref<Character[]>(response.results);
+const {
+    isLoading,
+    characters
+} = useCharacters()
 
 </script>
 
 <template>
-    <ul>
+    <span v-if="isLoading">Loading...</span>
+    <ul v-else>
         <li v-for="{ id, name } of characters" :key="id">{{ name }}</li>
     </ul>
 </template>
