@@ -1,10 +1,32 @@
 <script setup lang="ts">
-import { useCharacters } from '../composables/useCharacters';
+import { useQuery } from '@tanstack/vue-query'
+
+import { getAll } from '@/services'
+
+// import { useCharacters } from '../composables/useCharacters';
+
+// const {
+//     isLoading,
+//     characters
+// } = useCharacters()
+
+// TanStack Query
+
+const getCharacters = async () => {
+    return (await getAll()).results
+}
 
 const {
     isLoading,
-    characters
-} = useCharacters()
+    data: characters
+} = useQuery(
+    ['characters'],
+    getCharacters,
+    {
+        cacheTime: 1000 * 60,
+        refetchOnReconnect: 'always'
+    }
+)
 
 </script>
 
