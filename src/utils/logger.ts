@@ -1,6 +1,6 @@
 const mode = import.meta.env.MODE
 
-const fn = () => undefined
+const fn = () => { }
 
 const isInDevMode = mode === 'development'
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 
+import CharacterCard from './CharacterCard.vue'
+
 import { getAll } from '@/services'
 
 // import { useCharacters } from '../composables/useCharacters';
@@ -32,11 +34,15 @@ const {
 
 <template>
     <span v-if="isLoading">Loading...</span>
-    <ul v-else>
-        <li v-for="{ id, name } of characters" :key="id">{{ name }}</li>
-    </ul>
+    <div class="card-list" v-else>
+        <CharacterCard v-for="character of characters" :key="character.id" :character="character"></CharacterCard>
+    </div>
 </template>
 
 <style scoped>
-
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
 </style>
