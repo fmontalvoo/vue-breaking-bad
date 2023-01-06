@@ -11,14 +11,16 @@ defineProps<Props>()
 </script>
 
 <template>
-    <nav>
-        <img src="@/assets/logo.svg" alt="Logo" width="25" height="25">
-        <span>{{ title }}</span>
+    <header>
+        <nav>
+            <img src="@/assets/logo.svg" alt="Logo" width="25" height="25">
+            <span>{{ title }}</span>
 
-        <div v-if="links">
-            <router-link v-for="{ name, path, title } of links" :key="name" :to="path">{{ title }}</router-link>
-        </div>
-    </nav>
+            <div v-if="links">
+                <router-link v-for="{ name, path, title } of links" :key="name" :to="path">{{ title }}</router-link>
+            </div>
+        </nav>
+    </header>
 </template>
 
 <style scoped>

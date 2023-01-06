@@ -5,9 +5,7 @@ import { routerLinks } from "./router/link-routes";
 
 <template>
   <div class="wrapper">
-    <header>
-      <Navbar title="BreakingBad" :links="routerLinks" />
-    </header>
+    <Navbar title="BreakingBad" :links="routerLinks" />
 
     <main>
       <RouterView />
