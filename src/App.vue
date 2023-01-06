@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Navbar from "@/modules/characters/components/Navbar.vue";
+import Navbar from "@/shared/components/Navbar.vue";
 import { routerLinks } from "./router/link-routes";
 </script>
 
 <template>
   <div class="wrapper">
-    <Navbar title="BreakingBad" :links="routerLinks" />
+    <Navbar title="Rick and Morty" :links="routerLinks" />
 
     <main>
       <RouterView />
