@@ -1,15 +1,13 @@
 <script setup lang="ts">
-// defineProps({
-//     title: {
-//         type: String,
-//         required: true,
-//         default: 'Breaking Bad'
-//     }
-// })
+import { RouterLink } from 'vue-router'
+import type { RouteLink } from '@/router/link-routes'
 
-defineProps<{
-    title?: string,
-}>()
+interface Props {
+    title?: string
+    links?: RouteLink[]
+}
+
+defineProps<Props>()
 </script>
 
 <template>
@@ -17,7 +15,9 @@ defineProps<{
         <img src="@/assets/logo.svg" alt="Logo" width="25" height="25">
         <span>{{ title }}</span>
 
-        <router-link to="/characters">Characters</router-link>
+        <div v-if="links">
+            <router-link v-for="{ name, path, title } of links" :key="name" :to="path">{{ title }}</router-link>
+        </div>
     </nav>
 </template>
 

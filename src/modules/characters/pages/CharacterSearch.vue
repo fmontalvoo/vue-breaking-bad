@@ -3,7 +3,7 @@
 
 <template>
     <div>
-
+        <h2>Character search</h2>
     </div>
 </template>
 
