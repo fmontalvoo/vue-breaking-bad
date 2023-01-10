@@ -1,40 +1,13 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
-
 import CharacterCard from './CharacterCard.vue'
 
-import { getAll } from '@/services'
+import type { Character } from '@/models/response.model';
 
-// import { useCharacters } from '../composables/useCharacters';
-
-// const {
-//     isLoading,
-//     characters
-// } = useCharacters()
-
-// TanStack Query
-
-const getCharacters = async () => {
-    return (await getAll()).results
-}
-
-const {
-    isLoading,
-    data: characters
-} = useQuery(
-    ['characters'],
-    getCharacters,
-    {
-        cacheTime: 1000 * 60,
-        refetchOnReconnect: 'always'
-    }
-)
-
+defineProps<{ characters: Character[] }>()
 </script>
 
 <template>
-    <span v-if="isLoading">Loading...</span>
-    <div class="card-list" v-else>
+    <div class="card-list">
         <CharacterCard v-for="character of characters" :key="character.id" :character="character"></CharacterCard>
     </div>
 </template>
