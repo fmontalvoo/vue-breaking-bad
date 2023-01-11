@@ -3,6 +3,10 @@ import CardList from '@/modules/characters/components/CardList.vue'
 
 import charactersStore from '@/store/characters.store';
 
+import { useCharacters } from '../composables/useCharacters';
+
+useCharacters()
+
 </script>
 
 <template>

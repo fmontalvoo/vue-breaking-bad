@@ -1,6 +1,10 @@
-import { reactive } from "vue"
+import { reactive } from 'vue'
 
-import type { Character } from "@/models/response.model"
+import type { Character } from '@/models/response.model'
+
+import { getAll } from '@/services'
+
+import Logger from '@/utils/logger'
 
 interface Store {
     characters: {
@@ -23,15 +27,24 @@ const charactersStore = reactive<Store>({
         hasError: false,
         errorMessage: '',
     },
-    startLoadingCharacters() {
-
+    async startLoadingCharacters() {
+        this.loadCharactersSuccess((await getAll()).results)
     },
     loadCharactersSuccess(characters: Character[]) {
-
+        Logger.log('loadCharactersSuccess', characters)
+        this.characters = {
+            hasError: false,
+            isLoading: false,
+            list: characters,
+            errorMessage: '',
+            count: characters.length,
+        }
     },
     loadCharactersError(error: string) {
 
     },
 })
+
+charactersStore.startLoadingCharacters()
 
 export default charactersStore
