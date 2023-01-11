@@ -13,11 +13,6 @@ export const useCharacters = () => {
             if (charactersStore.characters.count > 0)
                 return charactersStore.characters.list
         },
-        {
-            onSuccess(data) {
-                charactersStore.loadCharactersSuccess(data!)
-            }
-        }
     )
 
     return {

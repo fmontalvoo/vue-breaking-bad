@@ -13,8 +13,14 @@ useCharacters()
     <div>
         <h2>Character list</h2>
 
-        <span v-if="charactersStore.characters.isLoading">Loading...</span>
-        <CardList v-else :characters="charactersStore.characters.list!" />
+        <div v-if="!charactersStore.characters.hasError">
+            <h3 v-if="charactersStore.characters.isLoading">Loading...</h3>
+            <CardList v-else :characters="charactersStore.characters.list!" />
+        </div>
+        <div v-else>
+            <h3>¡Algo salio mal!</h3>
+            <span><b>Error:</b> {{ charactersStore.characters.errorMessage }}</span>
+        </div>
     </div>
 </template>
 

@@ -16,7 +16,7 @@ interface Store {
     },
     startLoadingCharacters: () => void,
     loadCharactersSuccess: (characters: Character[]) => void,
-    loadCharactersError: (error: string) => void,
+    loadCharactersError: (error: Error) => void,
 }
 
 const charactersStore = reactive<Store>({
@@ -27,8 +27,10 @@ const charactersStore = reactive<Store>({
         hasError: false,
         errorMessage: '',
     },
-    async startLoadingCharacters() {
-        this.loadCharactersSuccess((await getAll()).results)
+    startLoadingCharacters() {
+        getAll()
+            .then(response => this.loadCharactersSuccess(response.results))
+            .catch(error => this.loadCharactersError(error))
     },
     loadCharactersSuccess(characters: Character[]) {
         Logger.log('loadCharactersSuccess', characters)
@@ -40,8 +42,15 @@ const charactersStore = reactive<Store>({
             count: characters.length,
         }
     },
-    loadCharactersError(error: string) {
-
+    loadCharactersError(error: Error) {
+        Logger.error('loadCharactersError', error)
+        this.characters = {
+            hasError: true,
+            isLoading: false,
+            list: [],
+            errorMessage: error.message,
+            count: 0,
+        }
     },
 })
 
