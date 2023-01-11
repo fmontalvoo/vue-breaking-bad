@@ -21,7 +21,7 @@ const router: RouteRecordRaw = {
         {
             path: ':id',
             name: 'characters-detail',
-            props: route => ({ id: route.params.id }),
+            props: route => ({ id: Number(route.params.id) }),
             component: () => import('@/modules/characters/pages/CharacterDetail.vue'),
         },
     ]
