@@ -14,15 +14,32 @@ interface Store {
         hasError: boolean
         errorMessage: string
     },
+    charactersDetail: {
+        list: { [id: string]: Character }
+        isLoading: boolean
+        hasError: boolean
+        errorMessage: string
+    },
     startLoadingCharacters: () => void,
     loadCharactersSuccess: (characters: Character[]) => void,
     loadCharactersError: (error: Error) => void,
+
+    startLoadingCharacter: () => void,
+    checkCharacter: (id: number) => boolean,
+    loadCharacterError: (error: Error) => void,
+    loadCharacterSuccess: (character: Character) => void,
 }
 
 const charactersStore = reactive<Store>({
     characters: {
         list: [],
         count: 0,
+        isLoading: true,
+        hasError: false,
+        errorMessage: '',
+    },
+    charactersDetail: {
+        list: {},
         isLoading: true,
         hasError: false,
         errorMessage: '',
@@ -51,6 +68,27 @@ const charactersStore = reactive<Store>({
             errorMessage: error.message,
             count: 0,
         }
+    },
+
+    startLoadingCharacter() {
+        this.charactersDetail = {
+            ...this.charactersDetail,
+            isLoading: true,
+            hasError: false,
+            errorMessage: '',
+        }
+    },
+    checkCharacter(id: number) {
+        return !!this.charactersDetail.list[id]
+    },
+    loadCharacterSuccess(character: Character) {
+        this.charactersDetail.isLoading = false
+        this.charactersDetail.list[character.id] = character
+    },
+    loadCharacterError(error: Error) {
+        this.charactersDetail.isLoading = false
+        this.charactersDetail.hasError = true
+        this.charactersDetail.errorMessage = error.message
     },
 })
 
