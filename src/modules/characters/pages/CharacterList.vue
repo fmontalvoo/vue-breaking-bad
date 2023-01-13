@@ -1,25 +1,29 @@
 <script setup lang="ts">
 import CardList from '@/modules/characters/components/CardList.vue'
 
-import charactersStore from '@/store/characters.store';
-
 import { useCharacters } from '../composables/useCharacters';
 
-useCharacters()
+const {
+    count,
+    hasError,
+    isLoading,
+    characters,
+    errorMessage,
+} = useCharacters()
 
 </script>
 
 <template>
     <div>
-        <h2>Character list</h2>
+        <h2>Character list: [{{ count }}]</h2>
 
-        <div v-if="!charactersStore.characters.hasError">
-            <h3 v-if="charactersStore.characters.isLoading">Loading...</h3>
-            <CardList v-else :characters="charactersStore.characters.list!" />
+        <div v-if="!hasError">
+            <h3 v-if="isLoading">Loading...</h3>
+            <CardList v-else :characters="characters!" />
         </div>
         <div v-else>
             <h3>¡Algo salio mal!</h3>
-            <span><b>Error:</b> {{ charactersStore.characters.errorMessage }}</span>
+            <span><b>Error:</b> {{ errorMessage }}</span>
         </div>
     </div>
 </template>
