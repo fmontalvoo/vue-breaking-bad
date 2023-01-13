@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import { watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 import { useCharacter } from '../composables/useCharacter'
 
+import Logger from '@/utils/logger';
+
 const props = defineProps<{ id: number }>()
+
+const router = useRouter()
 
 const {
     hasError,
@@ -10,6 +17,13 @@ const {
     errorMessage,
 } = useCharacter(props.id)
 
+watch(hasError, () => {
+    if (hasError.value) {
+        Logger.info('hasError', hasError.value)
+        router.replace({ name: 'characters-list' })
+    }
+
+})
 </script>
 
 <template>

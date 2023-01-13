@@ -27,12 +27,13 @@ const getCharacterById = async (characterId: number) => {
 export const useCharacter = (id: number) => {
 
     useQuery(
-        ['characters', id],
+        ['character', id],
         () => getCharacterById(id),
         {
             onSuccess: (character) => {
-                characterSet.value[character.id] = character
+                hasError.value = false
                 isLoading.value = false
+                characterSet.value[character.id] = character
             },
             onError: (error: Error) => {
                 hasError.value = true
