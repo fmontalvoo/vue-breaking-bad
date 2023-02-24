@@ -1,9 +1,8 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 
 import CharacterLayout from '@/modules/characters/layout/CharacterLayout.vue';
 
-const router: RouteRecordRaw = {
-    path: '/characters',
+const router = {
     name: 'characters',
     redirect: { name: 'characters-list' },
     component: CharacterLayout,
@@ -21,7 +20,7 @@ const router: RouteRecordRaw = {
         {
             path: ':id',
             name: 'characters-detail',
-            props: route => ({ id: Number(route.params.id) }),
+            props: (route: RouteLocationNormalized) => ({ id: Number(route.params.id) }),
             component: () => import('@/modules/characters/pages/CharacterDetail.vue'),
         },
     ]

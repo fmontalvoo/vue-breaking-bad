@@ -6,7 +6,6 @@ defineProps<{
     character: Character
 }>()
 
-
 const router = useRouter()
 </script>
 
