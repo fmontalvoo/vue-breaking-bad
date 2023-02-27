@@ -13,21 +13,23 @@ interface Store {
         isLoading: boolean
         hasError: boolean
         errorMessage: string
-    },
+    }
+
     charactersDetail: {
         list: { [id: string]: Character }
         isLoading: boolean
         hasError: boolean
         errorMessage: string
-    },
-    startLoadingCharacters: () => void,
-    loadCharactersSuccess: (characters: Character[]) => void,
-    loadCharactersError: (error: Error) => void,
+    }
 
-    startLoadingCharacter: () => void,
-    checkCharacter: (id: number) => boolean,
-    loadCharacterError: (error: Error) => void,
-    loadCharacterSuccess: (character: Character) => void,
+    startLoadingCharacters: () => void
+    loadCharactersSuccess: (characters: Character[]) => void
+    loadCharactersError: (error: Error) => void
+
+    startLoadingCharacter: () => void
+    checkCharacter: (id: number) => boolean
+    loadCharacterError: (error: Error) => void
+    loadCharacterSuccess: (character: Character) => void
 }
 
 const charactersStore = reactive<Store>({
@@ -92,6 +94,6 @@ const charactersStore = reactive<Store>({
     },
 })
 
-charactersStore.startLoadingCharacters()
+// charactersStore.startLoadingCharacters()
 
 export default charactersStore

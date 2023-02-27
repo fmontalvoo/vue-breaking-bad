@@ -1,33 +1,45 @@
 <script setup lang="ts">
+import { getAll } from '@/services'
+import { useQuery } from '@tanstack/vue-query'
+
+import charactersStore from '@/store/characters.store'
+
 import CardList from '@/modules/characters/components/CardList.vue'
 
-import { useCharacters } from '../composables/useCharacters';
+const getCharacters = async () => {
+    try {
+        if (charactersStore.characters.count > 0)
+            return charactersStore.characters.list
+        return (await getAll()).results
+    } catch (error) {
+        throw error
+    }
+}
 
-const {
-    count,
-    hasError,
-    isLoading,
-    characters,
-    errorMessage,
-} = useCharacters()
+useQuery(
+    ['characters'],
+    getCharacters,
+    {
+        onSuccess: (data) => charactersStore.loadCharactersSuccess(data),
+        onError: (error: Error) => charactersStore.loadCharactersError(error)
+    }
+)
 
 </script>
 
 <template>
     <div>
-        <h2>Character list: [{{ count }}]</h2>
+        <h2>Character list: [{{ charactersStore.characters.count }}]</h2>
 
-        <div v-if="!hasError">
-            <h3 v-if="isLoading">Loading...</h3>
-            <CardList v-else :characters="characters!" />
+        <div v-if="!charactersStore.characters.hasError">
+            <h3 v-if="charactersStore.characters.isLoading">Loading...</h3>
+            <CardList v-else :characters="charactersStore.characters.list" />
         </div>
         <div v-else>
             <h3>¡Algo salio mal!</h3>
-            <span><b>Error:</b> {{ errorMessage }}</span>
+            <span><b>Error:</b> {{ charactersStore.characters.errorMessage }}</span>
         </div>
     </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

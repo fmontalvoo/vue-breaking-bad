@@ -1,29 +1,30 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useQuery } from '@tanstack/vue-query'
 
-import { useCharacter } from '../composables/useCharacter'
-
-import Logger from '@/utils/logger';
+import { getById } from '@/services';
+import charactersStore from '@/store/characters.store'
 
 const props = defineProps<{ id: number }>()
 
-const router = useRouter()
-
-const {
-    hasError,
-    character,
-    isLoading,
-    errorMessage,
-} = useCharacter(props.id)
-
-watch(hasError, () => {
-    if (hasError.value) {
-        Logger.info('hasError', hasError.value)
-        router.replace({ name: 'characters-list' })
+const getCharacterById = async (characterId: number) => {
+    try {
+        if (charactersStore.checkCharacter(characterId))
+            return charactersStore.charactersDetail.list[characterId]
+        return await getById(characterId)
+    } catch (error) {
+        throw error
     }
+}
 
-})
+const { data: character } = useQuery(
+    ['character', props.id],
+    () => getCharacterById(props.id),
+    {
+        onSuccess: (character) => charactersStore.loadCharacterSuccess(character),
+        onError: (error: Error) => charactersStore.loadCharacterError(error)
+    }
+)
+
 </script>
 
 <template>
@@ -32,11 +33,11 @@ watch(hasError, () => {
             <small>Atras</small>
         </router-link>
 
-        <h3 v-if="isLoading && !character">Loading...</h3>
+        <h3 v-if="charactersStore.charactersDetail.isLoading && !character">Loading...</h3>
 
-        <div v-else-if="hasError">
+        <div v-else-if="charactersStore.charactersDetail.hasError">
             <h3>¡Algo salio mal!</h3>
-            <span><b>Error:</b> {{ errorMessage }}</span>
+            <span><b>Error:</b> {{ charactersStore.charactersDetail.errorMessage }}</span>
         </div>
 
         <div v-else class="character">
@@ -51,11 +52,13 @@ watch(hasError, () => {
                 <li>
                     <b>Genero:</b> {{ character?.gender.charAt(0).toUpperCase() }}
                 </li>
+                <li>
+                    <b>Estado:</b> {{ character?.status === 'Alive' ? 'Vivo' : 'Muerto' }}
+                </li>
             </ul>
         </div>
 
     </div>
-
 </template>
 
 <style scoped>
